@@ -11,40 +11,14 @@ const DB = "rental_database";
 
 
 
-const authenticate = async(req, res, next) => {
-
-  if (req.headers.authorization) {
-    try {
-      let decode = jwt.verify(req.headers.authorization, process.env.SECRETKEY)
-      let user = await db.collection("users").findOne({ email: req.body.email })
-      if (decode) {
-        next();
-      }
-
-    } catch (error) {
-      res.json({
-        statusCode: 401,
-        message: "unauthorized",
-        error,
-      })
-    }
-
-  } else {
-    res.json({
-      message: 401,
-      statusbar: "unauthorized"
-    })
-  }
-
-}
 
   // Cart items add to database
-  router.post("/addToCart",authenticate, async (req, res) => {
+  router.post("/addToCart", async (req, res) => {
 
     try {
       // Step 1 : Create a Connection between Nodejs and MongoDB
       const connection = await mongoClient.connect(URL);
-  
+  console.log(req.body);
       // Step 2 : Select the DB
       const db = connection.db(DB);
   
